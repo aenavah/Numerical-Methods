@@ -24,3 +24,5 @@ if __name__ == "__main__":
   betas = [0, 0, 0, 6/11]
 
   ComputeCoefs(alphas, betas)
+
+  #should be order 3 
