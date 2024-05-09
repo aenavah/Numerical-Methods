@@ -6,7 +6,7 @@ from matplotlib.animation import FuncAnimation
 print("2D heat equation solver")
 
 
-def Initialize(length = 40, height = 30, n = 20, dx = 1, dt = 0.001, u_top = 100, u_bottom = 2, u_left = 0, u_right = 0):
+def Initialize(length = 80, height = 70, n = 80, dx = 1, dt = 0.001, u_top = 100, u_bottom = 2, u_left = 0, u_right = 0):
 
     alpha = 2 #thermal diffusivity constant
 
