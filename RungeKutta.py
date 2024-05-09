@@ -90,8 +90,9 @@ if __name__ == "__main__":
   dt = 0.01
   t0 = 0 
   tn = 10
+  method = RK3
 
-  ts, us = RK_Call(y0, t0, tn, dt , RK3, f)    
+  ts, us = RK_Call(y0, t0, tn, dt , method, f)    
 
   '''Example call for stability region'''
   #From Midterm 213B
@@ -99,5 +100,6 @@ if __name__ == "__main__":
                 [1/4, 1/4, 0],
                 [0, 1, 0]])
   b = np.array(([1/6],[2/3],[1/6]))
+  
   h = np.ones_like(b)
   RK3_AbsoluteStabilityRegion(A, b, h, -6, 2, 4, -4)
