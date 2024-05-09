@@ -1,5 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import sympy as sp 
+import cmath
+
+
+def compute_boundary(alphas, betas):
+  theta = sp.symbols("theta")
+  e = sp.symbols("e")
+  q = len(alphas)
+  num = 0
+  den = 0
+  for j_tmp in range(0, q):
+    num += alphas[j_tmp]*(e**(j_tmp*1j*theta))
+    den += betas[j_tmp]*(e**(j_tmp*1j*theta))
+    lambdaj_deltat = num/den
+  return lambdaj_deltat
 
 def plot_boundary(method):
   #plots boundary given the boundary function
@@ -33,5 +48,16 @@ def AB3_boundary(theta):
   return y
 
 if __name__ == "__main__":
-# TO-DO - include formula in readme !!!
+  
+  #Example from HW2 Q1a
+
+  #-- automated boundary computation inputs
+  alphas = [0, 0, sp.Rational(-1,1), sp.Rational(1,1)]  
+  betas = [sp.Rational(5,12), sp.Rational(-4,3), sp.Rational(23,12), 0] 
+   
+  #-- call to compute and print boundary function
+  boundary = compute_boundary(alphas, betas) 
+  print("Boundary function: " + str(boundary))
+
+  #--  plot boundary call
   plot_boundary(BDF3_boundary)
