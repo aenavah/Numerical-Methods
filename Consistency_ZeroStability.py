@@ -64,6 +64,10 @@ def ZeroStability(rho):
   return Zero_Stable
 
 if __name__ == "__main__":
+  '''
+  Example Call
+  Used to determine Consistency and Zero Stability of a numerical scheme
+  '''
 
   alphas = [sp.Rational(-2, 11), sp.Rational(9, 11), sp.Rational(-18, 11), 1]  # Example coefficients for FirstChar
   betas = [0, 0, 0, sp.Rational(6, 11)]  # Example coefficients for SecondChar and SecondCharPrime
