@@ -25,26 +25,22 @@ def Initialize(length = 4, height = 3, n = 5, dx = 1, dt = 0.001, u_top = 100, u
         us[-1, :] = u_bottom
         us[1:-2, 0] = u_left
         us[1:-2, -1] = u_right
-        us_over_time[k, :, :] = us
+        #us_over_time[k, :, :] = us
     return us_over_time
-def Calculate(us_over_time, method = 1, dx = 1):
-    n, x_nodes, y_nodes = (us_over_time.shape)
-    print("total timesteps: " + str(n))
-    print("total number of x points: " + str(x_nodes))
-    print("total number of y points: " + str(y_nodes))
-    
-    for k in range(1, n-1):
-        us_last = us_over_time[k-1, :, :]
-        print("working at timestep " + str(k))
-        us = us_over_time[k , :, :]
-        for i in np.arange(1, y_nodes-1):
-            for j in np.arange(1, x_nodes-1):
-                us = us_last[i+1, j] + us_last[i-1, j] + us_last[i, j-1] - 4*us_last[i,j] + us_last[i,j]
-        us_over_time[k+1, :, :] = us
+def Calculate(us, method = 1, dx = 1):
+    n, x_nodes, y_nodes = np.shape(us)
+    print("number of timesteps: " + str(n))
+    print("number of x nodes: " + str(x_nodes))
+    print("number of y nodes: " + str(y_nodes))
+    us_last = us[0, :, :]
+    for k in range(1, n - 1, 1):
+        
+        us_next = np.zeros_like(us_last)
         print(us)
-    #print(us_over_time)
-    return us_over_time
-
+        for i in range(1, x_nodes - 1, delta_x):
+            for j in range(1, y_nodes - 1, delta_x):
+                u[k + 1, i, j] = gamma * (u[k,i+1,j] + u[k,i-1,j] + u[k,i,j+1] + u[k,i,j-1] - 4*u[k,i,j]) + u[k,i,j]
+    return u
 
 def plotheatmap(u_k, k):
     # Clear the current plot figure
