@@ -14,10 +14,10 @@ def Initialize(length = 40, height = 50, n = 60, dx = 1, dt = 0.001, u_top = 100
     x_nodes = length # length of plate
     y_nodes = height # height of plate
 
-    us_over_time = np.empty(n)
+    us_over_time = np.empty(n, x_nodes, y_nodes)
 
     for k in range(0, n): #for each timestep
-        us = np.empty(x_nodes, y_nodes)
+        us = np.empty((x_nodes, y_nodes))
         u_0 = 0 
         us.fill(u_0)
 
@@ -31,7 +31,7 @@ def Initialize(length = 40, height = 50, n = 60, dx = 1, dt = 0.001, u_top = 100
         us[:, 0] = u_left
         us[:, -1] = u_right
         us_over_time[k] = us
-
+    return us_over_time
 def Calculate(us_over_time, method, dx):
     n = len(us_over_time)
     for k in range(0, n):
@@ -59,12 +59,14 @@ def plotheatmap(u_k, k):
     return plt
 
 # Do the calculation here
+
+u = Initialize()
 u = Calculate(u)
 
-def animate(k):
-    plotheatmap(u[k], k)
+#def animate(k):
+    #plotheatmap(u[k], k)
 
-anim = animation.FuncAnimation(plt.figure(), animate, interval=1, frames=n, repeat=False)
+#anim = animation.FuncAnimation(plt.figure(), animate, interval=1, frames=n, repeat=False)
 #plt.show()
 #anim.save("heat_equation_solution.gif")
 
