@@ -6,7 +6,7 @@ from matplotlib.animation import FuncAnimation
 print("2D heat equation solver")
 
 
-def Initialize(length = 40, height = 50, n = 60, dx = 1, dt = 0.001, u_top = 100, u_bottom = 0, u_left = 0, u_right = 0):
+def Initialize(length = 4, height = 3, n = 5, dx = 1, dt = 0.001, u_top = 100, u_bottom = 2, u_left = 0, u_right = 0):
 
     alpha = 2 #thermal diffusivity constant
 
@@ -14,33 +14,35 @@ def Initialize(length = 40, height = 50, n = 60, dx = 1, dt = 0.001, u_top = 100
     x_nodes = length # length of plate
     y_nodes = height # height of plate
 
-    us_over_time = np.empty(n, x_nodes, y_nodes)
+    us_over_time = np.empty((n, x_nodes, y_nodes))
 
     for k in range(0, n): #for each timestep
         us = np.empty((x_nodes, y_nodes))
         u_0 = 0 
         us.fill(u_0)
 
-        u_top = 100
-        u_bottom = 0 
-        u_left = 0
-        u_right = 0 
-
         us[0, :] = u_top
         us[-1, :] = u_bottom
-        us[:, 0] = u_left
-        us[:, -1] = u_right
-        us_over_time[k] = us
+        us[1:-2, 0] = u_left
+        us[1:-2, -1] = u_right
+        us_over_time[k, :, :] = us
     return us_over_time
-def Calculate(us_over_time, method, dx):
-    n = len(us_over_time)
-    for k in range(0, n):
-        us = us_over_time[k]
-        x_nodes, y_nodes = np.shape(us)
-        for i in np.arange(1, x_nodes):
-            for j in np.arange(1, y_nodes):
-                u_next = u[i+1, j] + u[i-1, j] + u[i, j-1] - 4*u[i,j] + u[i,j]
-        us_over_time[k+1] = u_next
+def Calculate(us_over_time, method = 1, dx = 1):
+    n, x_nodes, y_nodes = (us_over_time.shape)
+    print("total timesteps: " + str(n))
+    print("total number of x points: " + str(x_nodes))
+    print("total number of y points: " + str(y_nodes))
+    
+    for k in range(1, n-1):
+        us_last = us_over_time[k-1, :, :]
+        print("working at timestep " + str(k))
+        us = us_over_time[k , :, :]
+        for i in np.arange(1, y_nodes-1):
+            for j in np.arange(1, x_nodes-1):
+                us = us_last[i+1, j] + us_last[i-1, j] + us_last[i, j-1] - 4*us_last[i,j] + us_last[i,j]
+        us_over_time[k+1, :, :] = us
+        print(us)
+    #print(us_over_time)
     return us_over_time
 
 
