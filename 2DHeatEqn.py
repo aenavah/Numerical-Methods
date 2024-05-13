@@ -6,7 +6,7 @@ from matplotlib.animation import FuncAnimation
 print("2D heat equation solver")
 
 
-def Initialize(length = 80, height = 70, n = 80, dx = 1, dt = 0.001, u_top = 100, u_bottom = 2, u_left = 0, u_right = 0):
+def Initialize(length = 50, height = 50, n = 1000, dx = 1, dt = 0.001, u_top = 100, u_bottom = 0, u_left = 0, u_right = 0):
 
     alpha = 2 #thermal diffusivity constant
 
@@ -27,8 +27,10 @@ def Initialize(length = 80, height = 70, n = 80, dx = 1, dt = 0.001, u_top = 100
         us[1:-2, -1] = u_right
         us_over_time[k, :, :] = us
     return us_over_time
-def Calculate(us, method = 1, dx = 1):
+
+def Calculate(us, method = 1, dx = 1, dt = 0.001):
     #fix this 
+    gamma = (2 * dt) / (dx ** 2)
     n, x_nodes, y_nodes = np.shape(us)
     print("number of timesteps: " + str(n))
     print("number of x nodes: " + str(x_nodes))
@@ -38,9 +40,9 @@ def Calculate(us, method = 1, dx = 1):
         us_last = us[k-1, :, :]
         us_next = us[k, :, :]
 
-        for i in range(1, x_nodes - 1, dx):
-            for j in range(1, y_nodes - 1, dx):
-                us_next[i, j] = us_last[i+1,j] + us_last[i-1,j] + us_last[i,j+1] + us_last[i,j-1] - 4*us_last[i,j] + us_last[i,j]
+        for i in range(1, x_nodes - 1):
+            for j in range(1, y_nodes - 1):
+                us_next[i, j] = gamma*(us_last[i + 1, j] + us_last[i - 1, j] + us_last[i, j + 1] + us_last[i, j - 1] - 4 * us_last[i, j]) + us_last[i, j]
         us[k, :, :] = us_next
     print(us)
     return us
@@ -72,6 +74,3 @@ plt.show()
 #anim.save("heat_equation_solution.gif")
 
 print("Done!")
-
-
-#adapting https://gist.github.com/corvasto/c6d9dba1b1dbcde1ddeee5eff3f8209a#file-fdm_2d_heat_equation-py
